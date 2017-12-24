@@ -10,7 +10,7 @@ module.exports = {
   handler: 'index.handler',
   description: 'text to speeck middleman',
   role: process.env.IAM_ROLE,
-  functionName: 'text-to-speech',
+  functionName: 'texttospeech-middleman',
   timeout: 20,
   memorySize: 128,
   runtime: 'nodejs6.1'

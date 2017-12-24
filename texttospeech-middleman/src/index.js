@@ -34,7 +34,7 @@ exports.handler = function (event, context, callback) {
   async.waterfall([
       function(next){
         console.log('feching object');
-        s3.getObject({
+        s3.headObject({
         Bucket: BUCKET_NAME,
         Key: s3Key
         }, next);

@@ -24,10 +24,12 @@ exports.handler = function (event, context, callback) {
   const request = event.Records[0].cf.request;
   console.log("request: ", JSON.stringify(request));
   const lang = querystring.parse(request.querystring).lang,
-        q = decodeURIComponent(querystring.parse(request.querystring).q);
+        textCoded = querystring.parse(request.querystring).q;
+  const textDecoded = decodeURIComponent(textCoded);
   console.log("lang: ", lang);
-  console.log("q: ", q);
-  const s3Key = generateS3Key(lang, q);
+  console.log("text coded: ", textCoded);
+  console.log("text decoded: ", textDecoded);
+  const s3Key = generateS3Key(lang, textCoded);
   request.uri = "/"+s3Key;
   console.log("bucket: ", BUCKET_NAME);
   console.log("s3key: ", s3Key);
@@ -49,7 +51,7 @@ exports.handler = function (event, context, callback) {
         return callback(err);
       }
       console.log("object does not exist, creating it...");
-      textToSpeech(lang, q)
+      textToSpeech(lang, textDecoded)
       .then(data=>{
         var params = {Bucket: BUCKET_NAME,
             Key: s3Key,

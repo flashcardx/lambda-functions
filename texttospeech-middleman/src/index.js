@@ -50,7 +50,7 @@ exports.handler = function (event, context, callback) {
       console.log("object does not exist, creating it...");
       textToSpeech(lang, q)
       .then(data=>{
-        var params = {Bucket: bucketName,
+        var params = {Bucket: BUCKET_NAME,
             Key: s3Key,
             Body: data.buffer,
             ContentType: data.contentType,

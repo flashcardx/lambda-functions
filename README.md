@@ -12,4 +12,4 @@ In this repository we upload AWS Lambda functions that the platform www.flashcar
 # deployment
 1. create a .env file in the folder of the function with all the necessary AWS keys. For security we don't commit this file to the repo
 2. `npm install`
-3. `gulp deploy`
+3. `gulp deploy` (for some reason this functions does not finish ok the first time we run it, we must run it twice or 3 times in order for it to finish ok)

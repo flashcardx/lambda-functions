@@ -28,6 +28,7 @@ exports.handler = function (event, context, callback) {
   console.log("lang: ", lang);
   console.log("q: ", q);
   const s3Key = generateS3Key(lang, q);
+  request.uri = "/"+s3Key;
   console.log("bucket: ", BUCKET_NAME);
   console.log("s3key: ", s3Key);
   async.waterfall([
@@ -59,6 +60,7 @@ exports.handler = function (event, context, callback) {
         s3.upload(params, err=>{
           if(err)
             return Promise.reject(err);
+          console.log("returning new request: ", request);
           callback(null, request);
         });
       })

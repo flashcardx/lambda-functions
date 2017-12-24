@@ -1,0 +1,21 @@
+[
+                {"name": "English", "code":"en", "voice": "Brian"},
+                {"name": "Español", "code":"es", "voice": "Enrique"},
+                {"name": "Dansk", "code":"da", "voice": "Naja"},
+                {"name": "Deutsch", "code":"de", "voice": "Marlene"},
+                {"name": "Français", "code":"fr", "voice": "Celine"},
+                {"name": "Italiano", "code":"it", "voice": "Carla"},
+                {"name": "Nederlands", "code":"nl", "voice": "Lotte"},
+                {"name": "Polski", "code":"pl", "voice": "Ewa"},
+                {"name": "Português", "code":"pt", "voice": "Vitoria"},
+                {"name": "Română", "code":"ro", "voice": "Carmen"},
+                {"name": "Svenska", "code":"sv", "voice": "Astrid"},
+                {"name": "Türkçe", "code":"tr", "voice": "Filiz"},
+                {"name": "Русский", "code":"ru", "voice": "Tatyana"},
+                {"name": "한국어", "code":"ko", "voice": "Seoyeon"},
+                {"name": "日本語", "code":"ja", "voice": "Mizuki"},
+                {"name": "Cymraeg", "code":"cy", "voice": "Gwyneth"},
+                {"name": "Íslenska", "code":"is", "voice": "Dora"},
+                {"name": "Norsk Bokmål", "code":"nb", "voice": "Liv"}
+    
+]

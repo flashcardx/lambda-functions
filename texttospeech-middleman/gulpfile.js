@@ -16,7 +16,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('js', function () {
-  return gulp.src('./src/index.js')
+  return gulp.src('./src/*')
     .pipe(gulp.dest('build/'));
 });
 
@@ -24,6 +24,12 @@ gulp.task('env', function () {
   return gulp.src('.env')
     .pipe(gulp.dest('build/'));
 });
+
+gulp.task('env-prod', function () {
+  return gulp.src('.env-prod')
+    .pipe(gulp.dest('build/'));
+});
+
 
 gulp.task('node-mods', function () {
   return gulp.src('./package.json')
@@ -43,11 +49,20 @@ gulp.task('upload', function (callback) {
   awsLambda.deploy('./dist/' + packageFile, require('./lambda-config.js'), callback);
 });
 
-
 gulp.task('deploy', function (callback) {
   return runSequence(
     ['clean'],
     ['js', 'env', 'node-mods'],
+    ['zip'],
+    ['upload'],
+    callback
+  );
+});
+
+gulp.task('deploy-prod', function (callback) {
+  return runSequence(
+    ['clean'],
+    ['js', 'env-prod', 'node-mods'],
     ['zip'],
     ['upload'],
     callback

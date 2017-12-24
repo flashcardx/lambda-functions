@@ -1,4 +1,4 @@
-# lamda-functions
+# lambda-functions
 
 # motivation
 

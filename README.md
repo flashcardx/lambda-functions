@@ -10,6 +10,6 @@ In this repository we upload AWS Lambda functions that the platform www.flashcar
 2. Image-compressor: This was an experiment where we wanted a function to compress images when saved to an S3 bucket, this is not running on Production right now, and may have some bugs
 
 # deployment
-1. create a .env file in the folder of the function, for security we dont commit this file to the repo
+1. create a .env file in the folder of the function with all the necessary AWS keys. For security we don't commit this file to the repo
 2. `npm install`
 3. `gulp deploy`

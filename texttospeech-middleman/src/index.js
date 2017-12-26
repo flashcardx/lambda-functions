@@ -14,18 +14,17 @@ if(env==="production"){
         useAccelerateEndpoint: true
     });
 }
-const querystring = require('querystring');
 console.log("AWS CONFIG:", JSON.stringify(AWS.config));
-
+console.log("env: ", env);
 // get reference to S3 client
 var s3 = new AWS.S3();
 const polly = new AWS.Polly();
 exports.handler = function (event, context, callback) {
   const request = event.Records[0].cf.request;
   console.log("request: ", JSON.stringify(request));
-  const lang = querystring.parse(request.querystring).lang,
-        textCoded = querystring.parse(request.querystring).q;
-  const textDecoded = decodeURIComponent(textCoded);
+  const lang = request.querystring.lang,
+        textDecoded = request.querystring.q;
+  const textCoded = encodeURIComponent(textDecoded);
   console.log("lang: ", lang);
   console.log("text coded: ", textCoded);
   console.log("text decoded: ", textDecoded);
@@ -35,7 +34,7 @@ exports.handler = function (event, context, callback) {
   console.log("s3key: ", s3Key);
   async.waterfall([
       function(next){
-        console.log('feching object');
+        console.log('fetching object');
         s3.headObject({
         Bucket: BUCKET_NAME,
         Key: s3Key

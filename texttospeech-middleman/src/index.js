@@ -3,11 +3,12 @@ require('dotenv').config();
 const env = process.env.NODE_ENV || "development";
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 const langCodes = require("./lang.json");
+const querystring = require("querystring");
 var async = require('async');
 var AWS = require('aws-sdk');
 AWS.config = new AWS.Config();
-AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY;
-AWS.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+AWS.config.accessKeyId = process.env.S3_AWS_ACCESS_KEY;
+AWS.config.secretAccessKey = process.env.S3_AWS_SECRET_ACCESS_KEY;
 AWS.config.region = process.env.AWS_S3_REGION;
 if(env==="production"){
     AWS.config.update({
@@ -22,8 +23,9 @@ const polly = new AWS.Polly();
 exports.handler = function (event, context, callback) {
   const request = event.Records[0].cf.request;
   console.log("request: ", JSON.stringify(request));
-  const lang = request.querystring.lang,
-        textDecoded = request.querystring.q;
+  const query = querystring.parse(request.querystring); 
+  const lang = query.lang,
+        textDecoded = query.q;
   const textCoded = encodeURIComponent(textDecoded);
   console.log("lang: ", lang);
   console.log("text coded: ", textCoded);

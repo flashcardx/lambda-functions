@@ -22,18 +22,13 @@ var s3 = new AWS.S3();
 const polly = new AWS.Polly();
 exports.handler = function (event, context, callback) {
   const request = event.Records[0].cf.request;
-  console.log("request: ", JSON.stringify(request));
+  const response = event.Records[0].cf.response;
   const query = querystring.parse(request.querystring); 
   const lang = query.lang,
         textDecoded = query.q;
   const textCoded = encodeURIComponent(textDecoded);
-  console.log("lang: ", lang);
-  console.log("text coded: ", textCoded);
-  console.log("text decoded: ", textDecoded);
-  const s3Key = generateS3Key(lang, textCoded);
-  request.uri = "/"+s3Key;
-  console.log("bucket: ", BUCKET_NAME);
-  console.log("s3key: ", s3Key);
+  const s3Key = generateS3Key(lang, textDecoded);
+  request.uri = "/"+ encodeURIComponent(s3Key);
   async.waterfall([
       function(next){
         console.log('fetching object');
@@ -72,7 +67,6 @@ exports.handler = function (event, context, callback) {
         callback(err);
       })
   });
-
 }
 
 function generateS3Key(lang, q){
@@ -83,7 +77,6 @@ function chooseLanguageActor(lang){
   for(var i=0; i<langCodes.length; i++)
       if(langCodes[i].code === lang)
           return langCodes[i].voice;
-  console.error("chooseLanguageActor got lang code invalid: ", lang);
   return langCodes[0].voice;
 }
 

@@ -3,39 +3,35 @@ require('dotenv').config();
 const env = process.env.NODE_ENV || "development";
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 const langCodes = require("./lang.json");
+const querystring = require("querystring");
 var async = require('async');
 var AWS = require('aws-sdk');
 AWS.config = new AWS.Config();
-AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY;
-AWS.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+AWS.config.accessKeyId = process.env.S3_AWS_ACCESS_KEY;
+AWS.config.secretAccessKey = process.env.S3_AWS_SECRET_ACCESS_KEY;
 AWS.config.region = process.env.AWS_S3_REGION;
 if(env==="production"){
     AWS.config.update({
         useAccelerateEndpoint: true
     });
 }
-const querystring = require('querystring');
 console.log("AWS CONFIG:", JSON.stringify(AWS.config));
-
+console.log("env: ", env);
 // get reference to S3 client
 var s3 = new AWS.S3();
 const polly = new AWS.Polly();
 exports.handler = function (event, context, callback) {
   const request = event.Records[0].cf.request;
-  console.log("request: ", JSON.stringify(request));
-  const lang = querystring.parse(request.querystring).lang,
-        textCoded = querystring.parse(request.querystring).q;
-  const textDecoded = decodeURIComponent(textCoded);
-  console.log("lang: ", lang);
-  console.log("text coded: ", textCoded);
-  console.log("text decoded: ", textDecoded);
-  const s3Key = generateS3Key(lang, textCoded);
-  request.uri = "/"+s3Key;
-  console.log("bucket: ", BUCKET_NAME);
-  console.log("s3key: ", s3Key);
+  const response = event.Records[0].cf.response;
+  const query = querystring.parse(request.querystring); 
+  const lang = query.lang,
+        textDecoded = query.q;
+  const textCoded = encodeURIComponent(textDecoded);
+  const s3Key = generateS3Key(lang, textDecoded);
+  request.uri = "/"+ encodeURIComponent(s3Key);
   async.waterfall([
       function(next){
-        console.log('feching object');
+        console.log('fetching object');
         s3.headObject({
         Bucket: BUCKET_NAME,
         Key: s3Key
@@ -71,7 +67,6 @@ exports.handler = function (event, context, callback) {
         callback(err);
       })
   });
-
 }
 
 function generateS3Key(lang, q){
@@ -82,7 +77,6 @@ function chooseLanguageActor(lang){
   for(var i=0; i<langCodes.length; i++)
       if(langCodes[i].code === lang)
           return langCodes[i].voice;
-  console.error("chooseLanguageActor got lang code invalid: ", lang);
   return langCodes[0].voice;
 }
 

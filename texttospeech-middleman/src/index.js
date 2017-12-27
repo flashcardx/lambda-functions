@@ -92,7 +92,7 @@ function textToSpeech(lang, text){
       var voiceId = chooseLanguageActor(lang);
       let params = {
           OutputFormat: "mp3",
-          SampleRate: "16000",
+          SampleRate: "22050",
           Text: ssml,
           VoiceId: voiceId,
           TextType: "ssml"

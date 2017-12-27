@@ -91,7 +91,8 @@ function textToSpeech(lang, text){
       const ssml = "<speak><prosody volume='x-loud' rate='slow'><lang xml:lang='"+lang+"'>"+text+"</lang></prosody></speak>"
       var voiceId = chooseLanguageActor(lang);
       let params = {
-          OutputFormat: "ogg_vorbis",
+          OutputFormat: "mp3",
+          SampleRate: "16000",
           Text: ssml,
           VoiceId: voiceId,
           TextType: "ssml"
